@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: forum-service
+          uri: lb://forum-service
+          predicates:
+            - Path=/forum/**
+        - id: feedback-service
+          uri: lb://feedback-service
+          predicates:
+            - Path=/feedback/**
+        - id: children-profile
+          uri: lb://children-profile
+          predicates:
+            - Path=/children/**
+        - id: image-gallery
+          uri: lb://image-gallery
+          predicates:
+            - Path=/image/**
+        - id: auth-users
+          uri: lb://auth-users
+          predicates:
+            - Path=/auth/**
