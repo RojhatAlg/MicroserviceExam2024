@@ -86,6 +86,23 @@ services:
       - rabbitmq
       - eureka-server
 
+  parent-profile:
+    container_name: parent-profile
+    build:
+      context: ./parent-profile
+      dockerfile: Dockerfile
+    ports:
+      - "6072:6072"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - spring
+    depends_on:
+      - postgres
+      - rabbitmq
+      - eureka-server
+
   feedback-service:
     container_name: feedback-service
     build:
@@ -109,23 +126,7 @@ services:
       context: ./forum-service
       dockerfile: Dockerfile
     ports:
-      - "1414:1414"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      SPRING_RABBITMQ_HOST: rabbitmq
-    networks:
-      - spring
-    depends_on:
-      - postgres
-      - rabbitmq
-      - eureka-server
-  image-gallery:
-    container_name: image-gallery
-    build:
-      context: ./image-gallery
-      dockerfile: Dockerfile
-    ports:
-      - "1818:1818"
+      - "1314:1314"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -136,19 +137,21 @@ services:
       - rabbitmq
       - eureka-server
 
-  auth-users:
-    container_name: auth-users
+  user-management:
+    container_name: user-management
     build:
-      context: ./auth-users
+      context: ./user-management
       dockerfile: Dockerfile
     ports:
       - "9089:9089"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_RABBITMQ_HOST: rabbitmq
     networks:
       - spring
     depends_on:
       - postgres
+      - rabbitmq
       - eureka-server
 
 

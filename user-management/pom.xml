@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.alg</groupId>
-	<artifactId>feedback-service</artifactId>
+	<artifactId>user-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>feedback-service</name>
+	<name>user-management</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>

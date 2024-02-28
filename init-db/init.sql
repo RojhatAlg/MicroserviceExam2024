@@ -1,5 +1,6 @@
-CREATE DATABASE auth;
+CREATE DATABASE users;
 CREATE DATABASE children_profile;
+CREATE DATABASE parent_profile;
 CREATE DATABASE gallery;
 CREATE DATABASE feedback;
 CREATE DATABASE forum;
