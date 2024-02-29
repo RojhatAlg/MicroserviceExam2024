@@ -34,7 +34,23 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: children-profile
+        - id: user-management
+          predicates:
+            - Path=/api/users/**
+          uri: lb://USERS-MANAGEMENT
+
+        - id: parent-service
           predicates:
             - Path=/api/parents/**
-          uri: lb://CHILDREN-PROFILE
+          uri: lb://PARENT-SERVICE
+
+        - id: children-service
+          predicates:
+            - Path=/api/children/**
+          uri: lb://CHILDREN-SERVICE
+
+        - id: feedback-service
+          predicates:
+            - Path=/api/feedbacks/**
+          uri: lb://FEEDBACK-SERVICE
+

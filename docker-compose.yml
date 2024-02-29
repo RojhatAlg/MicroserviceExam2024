@@ -10,7 +10,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     networks:
-      - spring
+      - micro
 
   gateway:
     container_name: gateway
@@ -24,7 +24,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     networks:
-      - spring
+      - micro
 
   rabbitmq:
     image: rabbitmq:3.13.0-rc.4-management-alpine
@@ -36,7 +36,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - spring
+      - micro
 
   postgres:
     image: postgres:latest
@@ -50,9 +50,8 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - spring
+      - micro
     restart: unless-stopped
-
 
   pgadmin:
     container_name: pgadmin
@@ -66,13 +65,13 @@ services:
     ports:
       - "5050:80"
     networks:
-      - spring
+      - micro
     restart: unless-stopped
 
-  children-profile:
-    container_name: children-profile
+  children-service:
+    container_name: children-service
     build:
-      context: ./children-profile
+      context: ./children-service
       dockerfile: Dockerfile
     ports:
       - "7072:7072"
@@ -80,16 +79,16 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
-      - spring
+      - micro
     depends_on:
       - postgres
       - rabbitmq
       - eureka-server
 
-  parent-profile:
-    container_name: parent-profile
+  parent-service:
+    container_name: parent-service
     build:
-      context: ./parent-profile
+      context: ./parent-service
       dockerfile: Dockerfile
     ports:
       - "6072:6072"
@@ -97,7 +96,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
-      - spring
+      - micro
     depends_on:
       - postgres
       - rabbitmq
@@ -114,24 +113,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
-      - spring
-    depends_on:
-      - postgres
-      - rabbitmq
-      - eureka-server
-
-  forum-service:
-    container_name: forum-service
-    build:
-      context: ./forum-service
-      dockerfile: Dockerfile
-    ports:
-      - "1314:1314"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      SPRING_RABBITMQ_HOST: rabbitmq
-    networks:
-      - spring
+      - micro
     depends_on:
       - postgres
       - rabbitmq
@@ -148,17 +130,24 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
-      - spring
+      - micro
     depends_on:
       - postgres
       - rabbitmq
       - eureka-server
 
+  frontend:
+    image: frontend
+    build:
+      context: ./../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - micro
 
 networks:
-  postgres:
-    driver: bridgeneclient
-  spring:
+  micro:
     driver: bridge
 
 volumes:

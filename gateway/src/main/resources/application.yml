@@ -35,23 +35,22 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: forum-service
-          uri: lb://forum-service
+        - id: user-management
           predicates:
-            - Path=/forum/**
+            - Path=/api/users/**
+          uri: lb://USER-MANAGEMENT
+
+        - id: parent-service
+          predicates:
+            - Path=/api/parents/**
+          uri: lb://PARENT-SERVICE
+
+        - id: children-service
+          predicates:
+            - Path=/api/children/**
+          uri: lb://CHILDREN-SERVICE
+
         - id: feedback-service
-          uri: lb://feedback-service
           predicates:
-            - Path=/feedback/**
-        - id: children-profile
-          uri: lb://children-profile
-          predicates:
-            - Path=/children/**
-        - id: image-gallery
-          uri: lb://image-gallery
-          predicates:
-            - Path=/image/**
-        - id: auth-users
-          uri: lb://auth-users
-          predicates:
-            - Path=/auth/**
+            - Path=/api/feedbacks/**
+          uri: lb://FEEDBACK-SERVICE
